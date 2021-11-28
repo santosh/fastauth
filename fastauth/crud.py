@@ -1,4 +1,6 @@
 from sqlalchemy.orm import Session
+import bcrypt
+
 from . import models, schemas
 
 def get_user_by_username(db: Session, username: str):
