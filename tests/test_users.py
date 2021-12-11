@@ -9,10 +9,6 @@ client = TestClient(app)
 class TestUserRegistration:
     """TestUserRegistration tests /users/register"""
 
-    @pytest.fixture(autouse=True)
-    def setup(self):
-        pass
-
     def test_get_request_returns_405(self):
         """registration endpoint does only expect a post request"""
         response = client.get("/users/register")
