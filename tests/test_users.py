@@ -1,7 +1,22 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from main import app
+from main import app, get_db
+from fastauth.database import DBInitTest
+
+
+def get_test_db():
+    session = None
+    try:
+        session = DBInitTest("sqlite:///./test.db").get_session()
+        session = session()
+        yield session
+    finally:
+        session.close()
+
+
+app.dependency_overrides[get_db] = get_test_db
+
 
 client = TestClient(app)
 

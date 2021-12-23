@@ -1,18 +1,18 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from fastauth import models, schemas, crud
-from fastauth.database import engine, SessionLocal
+from fastauth import schemas, crud
+from fastauth.database import DBInit
 
-models.Base.metadata.create_all(bind=engine)
 
 def get_db():
-    db = None
+    session = None
     try:
-        db = SessionLocal()
-        yield db
+        session = DBInit("postgresql+psycopg2://postgres:postgres@localhost/fastauth").get_session()
+        session = session()
+        yield session
     finally:
-        db.close()
+        session.close()
 
 app = FastAPI()
 
