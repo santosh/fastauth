@@ -1,8 +1,14 @@
+import os
+
 import pytest
 from fastapi.testclient import TestClient
 
 from main import app, get_db
 from fastauth.database import DBInitTest
+
+@pytest.fixture
+def delete_database():
+    os.unlink("./test.db")
 
 
 def get_test_db():
@@ -42,7 +48,7 @@ class TestUserRegistration:
         )
         assert response.status_code == 422
 
-    def test_post_request_with_proper_body_returns_201(self):
+    def test_post_request_with_proper_body_returns_201(self, delete_database):
         response = client.post(
             "/users/register",
             json={"username": "santosh", "password": "sntsh", "fullname": "Santosh Kumar"}
