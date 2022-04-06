@@ -6,6 +6,7 @@ services:
     container_name: postgres_database
     environment:
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=fastauth
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
