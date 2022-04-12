@@ -16,3 +16,13 @@ class UserInfo(UserInfoBase):
 
     class Config:
         orm_mode = True
+
+
+class UserAuthenticate(BaseModel):
+    username: str
+    password: str
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
