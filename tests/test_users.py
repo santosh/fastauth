@@ -84,3 +84,31 @@ class TestUserLogin:
         )
         assert response.status_code == 200
         assert len(response.json()) == 2
+
+
+class TestProtectedEndpoints:
+    def test_get_request_without_JWT_token_returns_403(self):
+        """sends GET request to /protected without JWT token"""
+
+        response = client.get("/protected")
+        assert response.status_code == 403
+
+    def test_get_request_without_JWT_token_returns_200_and_body(self):
+        """sends GET request to /protected"""
+
+        response = client.post(
+            "/users/auth",
+            json={"username": "santosh", "password": "sntsh"}
+        )
+
+        login_response = response.json()
+        access_token = login_response['access_token']
+        token_type = login_response['token_type']
+
+        response = client.get(
+            "/protected",
+            headers={'Authorization': '{} {}'.format(token_type, access_token)}
+        )
+
+        assert response.status_code == 200
+        assert len(response.json()) == 1

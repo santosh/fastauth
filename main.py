@@ -45,3 +45,8 @@ def authenticate_user(user: schemas.UserAuthenticate, db: Session = Depends(get_
             access_token = auth.encode_jwt_token(
                 data={"sub": user.username}, expires_delta=access_token_expires)
             return {"access_token": access_token, "token_type": "Bearer"}
+
+
+@app.get("/protected", dependencies=[Depends(auth.JWTBearer())])
+def get_protected_resource():
+    return { "message": "protected resource" }
